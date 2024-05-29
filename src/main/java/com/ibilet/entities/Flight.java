@@ -10,7 +10,7 @@ import java.util.Map;
 @Setter
 public class Flight {
     public enum FlightType {
-        DUS, DUS_INTORS
+        OneWay, RoundTrip
     }
 
     private String code;

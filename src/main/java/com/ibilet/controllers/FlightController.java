@@ -65,7 +65,7 @@ public class FlightController {
         createdFlight.setArrivalDate(arrivalDate);
         createdFlight.setDiscountPercentageDus(discountPercentageDus);
         createdFlight.setDiscountPercentageIntors(discountPercentageIntors);
-        createdFlight.setFlightType(Flight.FlightType.valueOf(flightType.toUpperCase()));
+        createdFlight.setFlightType(Flight.FlightType.valueOf(flightType));
         createdFlight.setCompanyId(user.getId());
 
         flightService.createFlight(createdFlight); // Save the flight using the FlightService

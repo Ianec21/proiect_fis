@@ -9,6 +9,8 @@ import com.google.firebase.cloud.FirestoreClient;
 import com.ibilet.entities.Flight;
 import com.ibilet.entities.FlightDTO;
 import com.ibilet.entities.FlightFilter;
+import com.ibilet.entities.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,6 +22,8 @@ import java.util.stream.Collectors;
 @Service
 public class FlightFilterService {
 
+    @Autowired
+    UserService userService;
     private static final String COLLECTION_NAME = "flights";
 
     public List<FlightDTO> FilterFlights(String arrivalCity,String reservationType, String departureDate,String arrivalDate,int children,int adults, String departureCity, String flightType) throws ExecutionException, InterruptedException {
@@ -32,17 +36,25 @@ public class FlightFilterService {
         List<FlightDTO> flights = new ArrayList<>();
         for (DocumentSnapshot document : snapshot.getDocuments()) {
             FlightDTO flight = document.toObject(FlightDTO.class);
-            flights.add(flight);
+
+            if(flight != null){
+                User company = userService.getUserById(flight.getCompanyId());
+                System.out.println(company.getUsername());
+                flight.setCompanyName(company.getUsername());
+
+                flights.add(flight);
+            }
         }
+
         int seatNumber = adults+children;
         List<FlightDTO> filteredFlight;
         filteredFlight = flights.stream()
                 .filter(flight -> flight.getArrivalCity().equals(arrivalCity))
                 .filter(flight -> flight.getDepartureDate().equals(departureDate))
-                .filter(flight -> flight.getDepartureDate().equals(arrivalDate))
                 //.filter(flight -> flight.getSeatNumber() >= seatNumber)
                 .filter(flight -> flight.getDepartureCity().equals(departureCity))
                 //.filter(flight -> flight.getFlightType().equals(flightType))
+                .filter(flight -> flight.getFlightType() == Flight.FlightType.valueOf(flightType))
                 .toList();
 
         return filteredFlight;

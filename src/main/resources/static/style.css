@@ -72,3 +72,21 @@ select{
     height: 100px;
     text-align: center;
 }
+
+.nav{
+    display: flex;
+    padding: 10px;
+    flex-direction: column;
+    gap: 10px;
+    background-color: orange;
+}
+
+.nav a {
+    text-decoration: none;
+    color: white;
+}
+
+.nav .items{
+    display: flex;
+    gap: 10px;
+}
