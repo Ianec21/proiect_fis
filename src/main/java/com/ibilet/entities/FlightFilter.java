@@ -9,9 +9,13 @@ import java.time.LocalDate;
 @Setter
 @Data
 public class FlightFilter {
-    public enum FlightType{Dus,DusIntors};
+    public enum FlightType{OneWay,RoundTrip}
     private String departureCity;
-    private String destinationCity;
-    private int seatNumber;
-    private LocalDate flightDate;
+    private String arrivalCity;
+    private String departureDate;
+    private String returnDate;
+    private int nrSeatsAdults;
+    private int nrSeatsChildren;
+    private String reservationType;
+    private FlightType flightType;
 }
