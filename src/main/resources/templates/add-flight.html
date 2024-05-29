@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link th:href="@{/style.css}" rel="stylesheet"/>
+    <title>Login</title>
+</head>
+<body>
+<h1>Add Flight</h1>
+<form action="/add-flight" method="post">
+
+    <div>
+        <label for="planeType">Plane Type:</label>
+        <input type="text" id="planeType" name="planeType">
+    </div>
+    <div>
+        <label for="totalSeats">Total Seats:</label>
+        <input type="number" id="totalSeats" name="totalSeats">
+    </div>
+    <div>
+        <label for="economyPrice">Economy Price:</label>
+        <input type="number" id="economyPrice" name="prices[economy]">
+    </div>
+    <div>
+        <label for="standardPrice">Standard Price:</label>
+        <input type="number" id="standardPrice" name="prices[standard]">
+    </div>
+    <div>
+        <label for="route">Route:</label>
+        <textarea id="route" name="route"></textarea>
+    </div>
+    <button type="submit">Add Flight</button>
+</form>
+</body>
+</html>
