@@ -25,7 +25,7 @@ public class TicketController {
     public FlightService flightService;
 
     @PostMapping("/ticket-buy")
-    public String createTicket(Model model, HttpSession session, String flightId, String firstName, String lastName, String email, String phoneNumber, String age, String paymentMethod) throws ExecutionException, InterruptedException {
+    public String createTicket(Model model, HttpSession session, String flightId, String firstName, String lastName, String email, String phoneNumber, String age, String paymentMethod, String cardNumber, String holderName, String expirationData, String cvc, String iban) throws ExecutionException, InterruptedException {
         model.addAttribute("flightId", flightId);
 
         Flight foundFlight = flightService.getFlightById(flightId);
@@ -34,6 +34,23 @@ public class TicketController {
         if(firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || phoneNumber.isEmpty() || age.isEmpty() || paymentMethod.isEmpty()){
             model.addAttribute("error", "Please fill in all fields!");
             return "ticket-buy";
+        }
+
+        if (paymentMethod.toUpperCase().equals(Ticket.PaymentMethod.CARD.toString())) {
+            if (cardNumber == null || cardNumber.isEmpty() ||
+                    holderName == null || holderName.isEmpty() ||
+                    expirationData == null || expirationData.isEmpty() ||
+                    cvc == null || cvc.isEmpty()) {
+                model.addAttribute("error", "Please fill in all fields!");
+                return "ticket-buy";
+            }
+        }
+
+        if (paymentMethod.toUpperCase().equals(Ticket.PaymentMethod.IBAN.toString())) {
+            if (iban == null || iban.isEmpty()) {
+                model.addAttribute("error", "Please fill in all fields!");
+                return "ticket-buy";
+            }
         }
 
         Ticket ticket = new Ticket();
@@ -45,6 +62,18 @@ public class TicketController {
         System.out.println(paymentMethod);
         ticket.setPaymentMethod(Ticket.PaymentMethod.valueOf(paymentMethod.toUpperCase()));
         ticket.setFlightId(flightId);
+
+        if(paymentMethod.toUpperCase().equals(Ticket.PaymentMethod.CARD.toString())){
+            ticket.setValidatedCashPayment(false);
+        }
+
+        if (paymentMethod.toUpperCase().equals(Ticket.PaymentMethod.CARD.toString())) {
+            ticket.setCardNumber(cardNumber);
+        }
+
+        if (paymentMethod.toUpperCase().equals(Ticket.PaymentMethod.IBAN.toString())) {
+            ticket.setIban(iban);
+        }
 
         User user = (User)session.getAttribute("loggedInUser");
         ticket.setUserID(user.getId());
