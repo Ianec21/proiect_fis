@@ -5,15 +5,44 @@
     <link th:href="@{/style.css}" rel="stylesheet"/>
 </head>
 <body>
-<h1>Welcome to the Flight Management System</h1>
-<div>
-    <a th:href="@{/login}">Login</a>
-</div>
-<div th:if="${session.loggedInUser != null}">
-    <h2>Welcome, <span th:text="${session.loggedInUser.username}">User</span></h2>
-    <div th:if="${session.loggedInUser.role == T(com.ibilet.entities.User.Role).AIRLINE}">
-        <a th:href="@{/add-flight}">Add Flight</a>
+    <h1>iBilet</h1>
+    <div th:if="${session.loggedInUser == null}">
+        <a th:href="@{/login}">Login</a>
     </div>
-</div>
+    <div th:if="${session.loggedInUser != null}">
+        <a th:href="@{/logout}">Log Out</a>
+    </div>
+    <div th:if="${session.loggedInUser != null}">
+        <h2>Welcome, <span th:text="${session.loggedInUser.username}">User</span></h2>
+        <div th:if="${session.loggedInUser.role == T(com.ibilet.entities.User.Role).AIRLINE}">
+            <a th:href="@{/add-flight}">Add Flight</a>
+        </div>
+    </div>
+
+    <div>
+        <table>
+            <thead>
+            <tr>
+                <th>Flight Code</th>
+                <th>Plane Type</th>
+                <th>Total Seats</th>
+                <th>Economy Price</th>
+                <th>Standard Price</th>
+                <th>Route</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="flight : ${flights}">
+                <td th:text="${flight.code}"></td>
+                <td th:text="${flight.planeType}"></td>
+                <td th:text="${flight.totalSeats}"></td>
+                <td th:text="${flight.economyPrice}"></td>
+                <td th:text="${flight.standardPrice}"></td>
+                <td th:text="${flight.route}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>

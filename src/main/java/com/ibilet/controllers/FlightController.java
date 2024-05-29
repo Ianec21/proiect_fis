@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 @Controller
@@ -21,6 +22,15 @@ public class FlightController {
 
     @Autowired
     private FlightService flightService;
+
+    @GetMapping("/")
+    public String openHomePage(Model model, HttpSession session) throws ExecutionException, InterruptedException {
+        List<Flight> flights = flightService.getAllFlights(); // Assuming you have a method in FlightService to retrieve all flights
+        System.out.println(flights.toString());
+        model.addAttribute("flights", flights);
+
+        return "home";
+    }
 
     @GetMapping("/home")
     public String home() {
@@ -39,9 +49,8 @@ public class FlightController {
         return "flights";
     }
 
-
     @PostMapping("/add-flight")
-    public String addFlight(String code, String planeType, int totalSeats, double economyPrice, double standardPrice,String route, HttpSession session, Model model) throws ExecutionException, InterruptedException {
+    public String addFlight(String planeType, int totalSeats, double economyPrice, double standardPrice, String route, HttpSession session, Model model) throws ExecutionException, InterruptedException {
         User user = (User) session.getAttribute("loggedInUser");
 
         if (user == null || user.getRole() != User.Role.AIRLINE) {
@@ -49,7 +58,7 @@ public class FlightController {
         }
 
         // Validation logic
-        if (code.isEmpty() || planeType.isEmpty() || totalSeats <= 0 || economyPrice <= 0 || standardPrice <= 0 || route.isEmpty()) {
+        if (planeType.isEmpty() || totalSeats <= 0 || economyPrice <= 0 || standardPrice <= 0 || route.isEmpty()) {
             model.addAttribute("error", "Please fill in all required fields!");
             return "add-flight";
         }
@@ -57,7 +66,7 @@ public class FlightController {
         model.addAttribute("error", "");
 
         Flight flight = new Flight();
-        flight.setCode(code);
+        flight.setCode(UUID.randomUUID().toString());
         flight.setPlaneType(planeType);
         flight.setTotalSeats(totalSeats);
         flight.setEconomyPrice(economyPrice);
@@ -66,6 +75,8 @@ public class FlightController {
         Map<String, String> routeMap = new HashMap<>();
         routeMap.put("routeDetails", route);
         flight.setRoute(routeMap);
+
+        System.out.println(flight);
 
         flightService.createFlight(flight); // Save the flight using the FlightService
         return "redirect:/home";

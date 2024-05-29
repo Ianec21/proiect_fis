@@ -33,9 +33,9 @@ public class AuthController {
                 session.setAttribute("loggedInUser", user);
 
                 if (user.getRole() == User.Role.CLIENT) {
-                    return "redirect:/client/home";
+                    return "redirect:/";
                 } else if (user.getRole() == User.Role.AIRLINE) {
-                    return "redirect:/airline/home";
+                    return "redirect:/";
                 }
             }
         } catch (ExecutionException | InterruptedException e) {

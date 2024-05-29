@@ -17,6 +17,8 @@ public class FlightService {
 
     public String createFlight(Flight flight) throws ExecutionException, InterruptedException {
         Firestore dbFirestore = FirestoreClient.getFirestore();
+
+        System.out.println(flight);
         DocumentReference documentReference = dbFirestore.collection(COLLECTION_NAME).document(flight.getCode());
         ApiFuture<WriteResult> writeResult = documentReference.set(flight);
         return writeResult.get().getUpdateTime().toString();
@@ -35,6 +37,8 @@ public class FlightService {
             Flight flight = document.toObject(Flight.class);
             flights.add(flight);
         }
+
+        System.out.println(flights);
         return flights;
     }
 }
