@@ -9,8 +9,12 @@
 <h1>Add a New Flight</h1>
 <form action="#" th:action="@{/add-flight}" th:object="${flight}" method="post">
     <div>
+        <label for="code">Flight Code:</label>
+        <input type="text" id="code" th:field="*{code}" hidden />
+    </div>
+    <div>
         <label for="planeType">Plane Type:</label>
-        <input type="text" id="planeType" th:field="*{planeType}" hidden />
+        <input type="text" id="planeType" th:field="*{planeType}" required />
     </div>
     <div>
         <label for="totalSeats">Total Number of Seats:</label>
