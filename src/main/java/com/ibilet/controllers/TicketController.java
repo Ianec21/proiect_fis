@@ -20,7 +20,9 @@ public class TicketController {
     public TicketService ticketService;
 
     @PostMapping("/ticket-buy")
-    public String createTicket(Model model, HttpSession session, String firstName, String lastName, String email, String phoneNumber, String age, String paymentMethod) throws ExecutionException, InterruptedException {
+    public String createTicket(Model model, HttpSession session, String flightId, String firstName, String lastName, String email, String phoneNumber, String age, String paymentMethod) throws ExecutionException, InterruptedException {
+        System.out.println(flightId);
+        model.addAttribute("flightId", flightId);
         if(firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || phoneNumber.isEmpty() || age.isEmpty() || paymentMethod.isEmpty()){
             model.addAttribute("error", "Please fill in all fields!");
             return "ticket-buy";
@@ -34,13 +36,15 @@ public class TicketController {
         ticket.setAge(Integer.parseInt(age));
         System.out.println(paymentMethod);
         ticket.setPaymentMethod(Ticket.PaymentMethod.valueOf(paymentMethod.toUpperCase()));
+        ticket.setFlightId(flightId);
 
-        User user = (User)session.getAttribute("user");
+        User user = (User)session.getAttribute("loggedInUser");
         ticket.setUserID(user.getId());
 
         ticketService.createTicket(ticket);
 
         model.addAttribute("error", "");
+        model.addAttribute("boughtTicket", ticket);
 
         return "ticket-success";
     }
@@ -51,7 +55,13 @@ public class TicketController {
     }
 
     @GetMapping("/ticket-buy")
-    public String openReserveTicketPage(){
+    public String openReserveTicketPage(Model model, HttpSession session, String flightId){
+        if(session.getAttribute("loggedInUser") == null){
+            return "redirect:/login";
+        }
+
+        model.addAttribute("flightId", flightId);
+
         return "ticket-buy";
     }
 }
