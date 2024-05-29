@@ -8,12 +8,12 @@
 <body class="rezervare">
 <form method="post" action="/search">
     <p class="title">Search Flights</p>
-    <p>Destination</p>
-        <input type = "text" name = "destination" placeholder="Destination"/>
+    <p>Departure</p>
+    <input type = "text" name = "departure" placeholder="Departure" required/>
     <p>Arrival</p>
-    <input type = "text" name = "arrival" placeholder="Arrival"/>
+    <input type = "text" name = "arrival" placeholder="Arrival" required/>
     <p>Adults</p>
-        <select name="adults">
+        <select name="adults" required>
         <option selected="selected" name="1">1</option>
         <option name="2">2</option>
         <option name="3">3</option>
@@ -21,7 +21,7 @@
         <option name="5">5</option>
     </select>
     <p>Children</p>
-        <select name="children">
+        <select name="children" required>
             <option selected="selected" name="0">0</option>
             <option name="1">1</option>
             <option name="2">2</option>
@@ -29,13 +29,17 @@
             <option name="4">4</option>
             <option name="5">5</option>
         </select>
-    <select name="flightType">
+    <select name="flightType" required>
         <option selected="selected" name="oneway">OneWay</option>
         <option name="roundtrip">RoundTrip</option>
     </select>
+    <select name="reservationType" required>
+        <option selected="selected" name="economy">Economy</option>
+        <option name="firstClass">FirstClass</option>
+    </select>
     <label for="start">Departure date:</label>
-    <input type="date" id="start" name="start" value="2024-05-30" min="2024-05-30" max="2025-05-30" />
-    <input type="date" id="return" name="start" value="2024-05-30" min="2024-05-30" max="2025-05-30" />
+    <input type="date" id="start" name="departureDate" value="2024-05-30" min="2024-05-30" max="2025-05-30" />
+    <input type="date" id="return" name="arrivalDate" value="2024-05-30" min="2024-05-30" max="2025-05-30" />
     <button type="submit">Search</button>
 </form>
 

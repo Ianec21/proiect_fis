@@ -7,6 +7,7 @@ import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.firebase.cloud.FirestoreClient;
 import com.ibilet.entities.Flight;
+import com.ibilet.entities.FlightDTO;
 import com.ibilet.entities.FlightFilter;
 import org.springframework.stereotype.Service;
 
@@ -21,23 +22,23 @@ public class FlightFilterService {
 
     private static final String COLLECTION_NAME = "flights";
 
-    public List<Flight> FilterFlights(String arrivalCity,String reservationType, String departureDate,String arrivalDate, int seatNumber, String departureCity, String flightType) throws ExecutionException, InterruptedException {
+    public List<FlightDTO> FilterFlights(String arrivalCity,String reservationType, String departureDate,String arrivalDate,int children,int adults, String departureCity, String flightType) throws ExecutionException, InterruptedException {
         Firestore dbFirestore = FirestoreClient.getFirestore();
         CollectionReference flightsCollection = dbFirestore.collection(COLLECTION_NAME);
 
         ApiFuture<QuerySnapshot> future = flightsCollection.get();
         QuerySnapshot snapshot = future.get();
 
-        List<Flight> flights = new ArrayList<>();
+        List<FlightDTO> flights = new ArrayList<>();
         for (DocumentSnapshot document : snapshot.getDocuments()) {
-            Flight flight = document.toObject(Flight.class);
+            FlightDTO flight = document.toObject(FlightDTO.class);
             flights.add(flight);
         }
-        List<Flight> filteredFlight;
+        List<FlightDTO> filteredFlight;
         filteredFlight = flights.stream()
-                .filter(flight -> flight.getArrivalCity().equals(arrivalCity))
+/*                .filter(flight -> flight.getArrivalCity().equals(arrivalCity))
                 .filter(flight -> flight.getDepartureHour().equals(departureDate))
-                .filter(flight -> flight.getDepartureHour().equals(arrivalDate))
+                .filter(flight -> flight.getDepartureHour().equals(arrivalDate))*/
                 //.filter(flight -> flight.get() >= seatNumber)
                 .filter(flight -> flight.getDepartureCity().equals(departureCity))
                 //.filter(flight -> flight.getFlightType().equals(flightType))
