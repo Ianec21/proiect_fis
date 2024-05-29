@@ -17,6 +17,7 @@ public class TicketService {
     public String createTicket(Ticket ticket) throws ExecutionException, InterruptedException {
         Firestore db = FirestoreClient.getFirestore();
         String uniqueID = UUID.randomUUID().toString();
+        ticket.setId(uniqueID);
         ApiFuture<WriteResult> docRef = db.collection("tickets").document(uniqueID).set(ticket);
 
         return docRef.get().getUpdateTime().toString();

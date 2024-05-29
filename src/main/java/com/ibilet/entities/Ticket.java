@@ -8,10 +8,11 @@ import lombok.Setter;
 @Setter
 @Data
 public class Ticket {
-    private enum PaymentMethod {
+    public enum PaymentMethod {
         CASH, CARD, IBAN
     }
 
+    private String id;
     private String firstName;
     private String lastName;
     private String phoneNumber;
