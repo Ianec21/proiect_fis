@@ -1,0 +1,38 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<header>
+    <link th:href="@{/style.css}" rel="stylesheet"/>
+    <title>
+        Zboruri
+    </title>
+</header>
+<body class="rezervare">
+<form>
+    <p class="title">Search Flights</p>
+    <p>Destination</p>
+        <input type = "text" name = "destination" placeholder="Destination"/>
+    <p>Arrival</p>
+    <input type = "text" name = "arrival" placeholder="Arrival"/>
+    <p>Adults</p>
+        <select name="adults">
+        <option selected="selected" name="1">1</option>
+        <option name="2">2</option>
+        <option name="3">3</option>
+        <option name="4">4</option>
+        <option name="5">5</option>
+    </select>
+    <p>Children</p>
+        <select name="adulti">
+            <option selected="selected" name="0">0</option>
+            <option name="1">1</option>
+            <option name="2">2</option>
+            <option name="3">3</option>
+            <option name="4">4</option>
+            <option name="5">5</option>
+        </select>
+    <label for="start">Departure date:</label>
+<input type="date" id="start" name="trip-start" value="2024-05-30" min="2024-05-30" max="2025-05-30" />
+    <button type="submit">Search</button>
+</form>
+
+</body>
+</html>
