@@ -20,4 +20,5 @@ public class Ticket {
     private int age;
     private PaymentMethod paymentMethod;
     private String flightId;
+    private String userID;
 }
