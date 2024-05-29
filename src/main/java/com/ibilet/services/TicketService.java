@@ -6,6 +6,7 @@ import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.cloud.FirestoreClient;
 import com.ibilet.entities.Ticket;
+import com.ibilet.entities.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +18,7 @@ public class TicketService {
     public String createTicket(Ticket ticket) throws ExecutionException, InterruptedException {
         Firestore db = FirestoreClient.getFirestore();
         String uniqueID = UUID.randomUUID().toString();
+        ticket.setId(uniqueID);
         ApiFuture<WriteResult> docRef = db.collection("tickets").document(uniqueID).set(ticket);
 
         return docRef.get().getUpdateTime().toString();
