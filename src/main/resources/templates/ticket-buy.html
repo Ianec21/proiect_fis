@@ -9,6 +9,7 @@
         <form method="post" action="/ticket-buy">
             <p class="title">Buy Ticket</p>
             <p class="error" style="text-align:center;" th:text="${error}"/>
+            <input type="text" hidden="hidden" name="flightId" th:value="${flightId}"/>
             <input type="text" name="firstName" placeholder="Firstname"/>
             <input type="text" name="lastName" placeholder="Lastname"/>
             <input type="text" name="email" placeholder="E-Mail"/>

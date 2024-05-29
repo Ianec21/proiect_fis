@@ -25,27 +25,17 @@
             <tr>
                 <th>Flight Code</th>
                 <th>Plane Type</th>
-                <th>Total Seats</th>
-                <th>Economy Price</th>
-                <th>Standard Price</th>
-                <th>Route City</th>
-                <th>Route Date</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="flight : ${flights}">
                 <td th:text="${flight.code}"></td>
                 <td th:text="${flight.planeType}"></td>
-                <td th:text="${flight.totalSeats}"></td>
-                <td th:text="${flight.economyPrice}"></td>
-                <td th:text="${flight.standardPrice}"></td>
-                <td colspan="2">
-                    <table>
-                        <tr th:each="routeEntry : ${flight.route}">
-                            <td th:text="${routeEntry.key}"></td>
-                            <td th:text="${routeEntry.value}"></td>
-                        </tr>
-                    </table>
+                <td th:if="${session.loggedInUser != null && session.loggedInUser.role == T(com.ibilet.entities.User.Role).CLIENT}">
+                    <form method="get" action="/ticket-buy">
+                        <input hidden="hidden" th:value="${flight.code}" name="flightId"/>
+                        <button class="button">Buy Ticket</button>
+                    </form>
                 </td>
             </tr>
             </tbody>
