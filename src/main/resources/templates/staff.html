@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Staff</title>
+    <link th:href="@{/style.css}" rel="stylesheet"/>
+</head>
+<body>
+<h1>iBilet</h1>
+<a th:href="@{/}">Home</a>
+<div th:if="${session.loggedInUser == null}">
+    <a th:href="@{/login}">Login</a>
+</div>
+<div th:if="${session.loggedInUser != null}">
+    <a th:href="@{/logout}">Log Out</a>
+</div>
+<div th:if="${session.loggedInUser != null}">
+    <h2>Welcome, <span th:text="${session.loggedInUser.username}">User</span></h2>
+    <div th:if="${session.loggedInUser.role == T(com.ibilet.entities.User.Role).AIRLINE}">
+        <a th:href="@{/add-flight}">Add Flight</a>
+    </div>
+</div>
+
+<div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nume</th>
+            <th>Prenume</th>
+            <th>Optiune</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="ticket : ${tickets}">
+            <td th:text="${ticket.id}"></td>
+            <td th:text="${ticket.firstName}"></td>
+            <td th:text="${ticket.lastName}"></td>
+
+            <td>
+                <form method="post" action="/ticket-validate">
+                    <input hidden="hidden" th:value="${ticket.id}" name="ticketId"/>
+                    <button class="button">Validate</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

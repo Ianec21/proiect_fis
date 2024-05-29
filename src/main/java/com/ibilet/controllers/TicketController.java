@@ -1,5 +1,6 @@
 package com.ibilet.controllers;
 
+import com.google.api.Http;
 import com.ibilet.entities.Flight;
 import com.ibilet.entities.Ticket;
 import com.ibilet.entities.User;
@@ -103,5 +104,14 @@ public class TicketController {
         model.addAttribute("flightData", foundFlight);
 
         return "ticket-buy";
+    }
+
+    @PostMapping("/ticket-validate")
+    public String validateTicket(Model model, HttpSession session, String ticketId) throws ExecutionException, InterruptedException {
+        Ticket foundTicket = ticketService.getTicketById(ticketId);
+        System.out.println(foundTicket.getId());
+        ticketService.validateTicket(foundTicket);
+
+        return "staff";
     }
 }

@@ -6,6 +6,7 @@
 </head>
 <body>
     <h1>iBilet</h1>
+    <a th:href="@{/}">Home</a>
     <div th:if="${session.loggedInUser == null}">
         <a th:href="@{/login}">Login</a>
     </div>
@@ -17,6 +18,10 @@
         <div th:if="${session.loggedInUser.role == T(com.ibilet.entities.User.Role).AIRLINE}">
             <a th:href="@{/add-flight}">Add Flight</a>
         </div>
+
+        <div th:if="${session.loggedInUser.role == T(com.ibilet.entities.User.Role).AIRLINE}">
+            <a th:href="@{/staff}">Staff</a>
+        </div>
     </div>
 
     <div>
@@ -25,6 +30,8 @@
             <tr>
                 <th>Company</th>
                 <th>Plane Code</th>
+                <th>Departure City</th>
+                <th>Arrival City</th>
                 <th>Departure Date</th>
                 <th>Arrival Date</th>
                 <th>Departure Hour</th>
@@ -36,6 +43,8 @@
             <tr th:each="flight : ${flights}">
                 <td th:text="${flight.companyName}"></td>
                 <td th:text="${flight.code}"></td>
+                <td th:text="${flight.departureCity}"></td>
+                <td th:text="${flight.arrivalCity}"></td>
                 <td th:text="${flight.departureDate}"></td>
                 <td th:text="${flight.arrivalDate}"></td>
                 <td th:text="${flight.departureHour}"></td>
