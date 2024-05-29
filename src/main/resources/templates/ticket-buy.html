@@ -9,19 +9,52 @@
         <form method="post" action="/ticket-buy">
             <p class="title">Buy Ticket</p>
             <p class="error" style="text-align:center;" th:text="${error}"/>
+            <p>Flight Details</p>
+            <p>Departure City: <span th:text="${flightData.departureCity}"></span></p>
+            <p>Departure Date: <span th:text="${flightData.departureDate}"></span></p>
+            <p>Departure Hour: <span th:text="${flightData.departureHour}"></span></p>
+            <p>Arrival City: <span th:text="${flightData.arrivalCity}"></span></p>
+            <p>Arrival Date: <span th:text="${flightData.arrivalDate}"></span></p>
+            <p>Arrival Hour: <span th:text="${flightData.arrivalHour}"></span></p>
             <input type="text" hidden="hidden" name="flightId" th:value="${flightId}"/>
             <input type="text" name="firstName" placeholder="Firstname"/>
             <input type="text" name="lastName" placeholder="Lastname"/>
             <input type="text" name="email" placeholder="E-Mail"/>
             <input type="text" name="phoneNumber" placeholder="Phone Number"/>
             <input type="text" name="age" placeholder="Age"/>
-            <select name="paymentMethod">
+            <select id="paymentMethod" name="paymentMethod">
                 <option name="CASH">Cash</option>
                 <option name="CARD">Card</option>
                 <option name="IBAN">Bank Account</option>
             </select>
+            <div id="card_details" style="display: none;">
+                <input type="text" placeholder="Credit Card Number"/>
+                <input type="text" placeholder="Holder Name"/>
+                <input type="text" placeholder="Expiration Date"/>
+                <input type="text" placeholder="CVC"/>
+            </div>
+            <div id="iban_details" style="display: none;">
+                <input type="text" name="iban" placeholder="IBAN"/>
+            </div>
             <button type="submit">Buy</button>
             <button type="button">Cancel</button>
         </form>
+
+        <script>
+            document.getElementById('paymentMethod').addEventListener('change', function() {
+                var cardDetailsDiv = document.getElementById('card_details');
+                var ibanDiv = document.getElementById('iban_details');
+                if (this.value === 'Card') {
+                    ibanDiv.style.display = 'none';
+                    cardDetailsDiv.style.display = 'block';
+                } else if (this.value === 'Bank Account') {
+                    ibanDiv.style.display = 'block';
+                    cardDetailsDiv.style.display = 'none';
+                } else {
+                    ibanDiv.style.display = 'none';
+                    cardDetailsDiv.style.display = 'none';
+                }
+            });
+        </script>
     </body>
 </html>

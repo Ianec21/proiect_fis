@@ -1,6 +1,7 @@
 package com.ibilet.controllers;
 
 import com.ibilet.entities.Flight;
+import com.ibilet.entities.FlightDTO;
 import com.ibilet.services.FlightService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String openHomePage(Model model, HttpSession session) throws ExecutionException, InterruptedException {
-        List<Flight> flights = flightService.getAllFlights(); // Assuming you have a method in FlightService to retrieve all flights
+        List<FlightDTO> flights = flightService.getAllFlights(); // Assuming you have a method in FlightService to retrieve all flights
         System.out.println(flights.toString());
         model.addAttribute("flights", flights);
 

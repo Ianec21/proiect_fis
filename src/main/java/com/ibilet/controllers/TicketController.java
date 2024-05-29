@@ -1,7 +1,9 @@
 package com.ibilet.controllers;
 
+import com.ibilet.entities.Flight;
 import com.ibilet.entities.Ticket;
 import com.ibilet.entities.User;
+import com.ibilet.services.FlightService;
 import com.ibilet.services.TicketService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +21,16 @@ public class TicketController {
     @Autowired
     public TicketService ticketService;
 
+    @Autowired
+    public FlightService flightService;
+
     @PostMapping("/ticket-buy")
     public String createTicket(Model model, HttpSession session, String flightId, String firstName, String lastName, String email, String phoneNumber, String age, String paymentMethod) throws ExecutionException, InterruptedException {
-        System.out.println(flightId);
         model.addAttribute("flightId", flightId);
+
+        Flight foundFlight = flightService.getFlightById(flightId);
+        model.addAttribute("flightData", foundFlight);
+
         if(firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || phoneNumber.isEmpty() || age.isEmpty() || paymentMethod.isEmpty()){
             model.addAttribute("error", "Please fill in all fields!");
             return "ticket-buy";
@@ -55,12 +63,15 @@ public class TicketController {
     }
 
     @GetMapping("/ticket-buy")
-    public String openReserveTicketPage(Model model, HttpSession session, String flightId){
+    public String openReserveTicketPage(Model model, HttpSession session, String flightId) throws ExecutionException, InterruptedException {
         if(session.getAttribute("loggedInUser") == null){
             return "redirect:/login";
         }
 
+        Flight foundFlight = flightService.getFlightById(flightId);
+
         model.addAttribute("flightId", flightId);
+        model.addAttribute("flightData", foundFlight);
 
         return "ticket-buy";
     }
