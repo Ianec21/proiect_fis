@@ -6,18 +6,18 @@
         </title>
     </header>
     <body class="rezervare">
-        <form method="post" action="/rezervare-bilet">
+        <form method="post" action="/ticket-buy">
             <p class="title">Buy Ticket</p>
             <p class="error" style="text-align:center;" th:text="${error}"/>
-            <input type="text" name="nume" placeholder="Firstname"/>
-            <input type="text" name="prenume" placeholder="Lastname"/>
+            <input type="text" name="firstName" placeholder="Firstname"/>
+            <input type="text" name="lastName" placeholder="Lastname"/>
             <input type="text" name="email" placeholder="E-Mail"/>
-            <input type="text" name="telefon" placeholder="Phone Number"/>
-            <input type="text" name="varsta" placeholder="Age"/>
-            <select name="tip_plata">
-                <option name="cash">Cash</option>
-                <option name="card">Card</option>
-                <option name="iban">Bank Account</option>
+            <input type="text" name="phoneNumber" placeholder="Phone Number"/>
+            <input type="text" name="age" placeholder="Age"/>
+            <select name="paymentMethod">
+                <option name="CASH">Cash</option>
+                <option name="CARD">Card</option>
+                <option name="IBAN">Bank Account</option>
             </select>
             <button type="submit">Buy</button>
             <button type="button">Cancel</button>
