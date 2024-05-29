@@ -18,4 +18,6 @@ public class FlightDTO {
     private Flight.FlightType flightType;
     private String departureDate;
     private String arrivalDate;
+    private String departureCity;
+    private String arrivalCity;
 }
