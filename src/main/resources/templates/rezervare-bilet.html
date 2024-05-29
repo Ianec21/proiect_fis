@@ -2,25 +2,25 @@
     <header>
         <link th:href="@{/style.css}" rel="stylesheet"/>
         <title>
-            Rezervare Bilet
+            Buy Ticket
         </title>
     </header>
     <body class="rezervare">
         <form method="post" action="/rezervare-bilet">
-            <p class="title">Pagina pentru rezervare bilet</p>
+            <p class="title">Buy Ticket</p>
             <p class="error" style="text-align:center;" th:text="${error}"/>
-            <input type="text" name="nume" placeholder="Nume"/>
-            <input type="text" name="prenume" placeholder="Prenume"/>
+            <input type="text" name="nume" placeholder="Firstname"/>
+            <input type="text" name="prenume" placeholder="Lastname"/>
             <input type="text" name="email" placeholder="E-Mail"/>
-            <input type="text" name="telefon" placeholder="Telefon"/>
-            <input type="text" name="varsta" placeholder="Varsta"/>
+            <input type="text" name="telefon" placeholder="Phone Number"/>
+            <input type="text" name="varsta" placeholder="Age"/>
             <select name="tip_plata">
                 <option name="cash">Cash</option>
                 <option name="card">Card</option>
-                <option name="iban">Virament Bancar</option>
+                <option name="iban">Bank Account</option>
             </select>
-            <button type="submit">Rezerva</button>
-            <button type="button">Renunta</button>
+            <button type="submit">Buy</button>
+            <button type="button">Cancel</button>
         </form>
     </body>
 </html>
