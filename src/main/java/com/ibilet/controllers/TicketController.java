@@ -1,7 +1,9 @@
 package com.ibilet.controllers;
 
 import com.ibilet.entities.Ticket;
+import com.ibilet.entities.User;
 import com.ibilet.services.TicketService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +20,7 @@ public class TicketController {
     public TicketService ticketService;
 
     @PostMapping("/ticket-buy")
-    public String createTicket(Model model, String firstName, String lastName, String email, String phoneNumber, String age, String paymentMethod) throws ExecutionException, InterruptedException {
+    public String createTicket(Model model, HttpSession session, String firstName, String lastName, String email, String phoneNumber, String age, String paymentMethod) throws ExecutionException, InterruptedException {
         if(firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || phoneNumber.isEmpty() || age.isEmpty() || paymentMethod.isEmpty()){
             model.addAttribute("error", "Please fill in all fields!");
             return "ticket-buy";
@@ -32,6 +34,9 @@ public class TicketController {
         ticket.setAge(Integer.parseInt(age));
         System.out.println(paymentMethod);
         ticket.setPaymentMethod(Ticket.PaymentMethod.valueOf(paymentMethod.toUpperCase()));
+
+        User user = (User)session.getAttribute("user");
+        ticket.setUserID(user.getId());
 
         ticketService.createTicket(ticket);
 

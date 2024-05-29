@@ -6,6 +6,7 @@ import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.cloud.FirestoreClient;
 import com.ibilet.entities.Ticket;
+import com.ibilet.entities.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
