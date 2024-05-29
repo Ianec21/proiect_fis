@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Montserrat", sans-serif;
+}
+
+input[type="text"], input[type="password"]{
+    padding: 10px;
+    border-width: 0;
+    border-color: black;
+    border-bottom-width: 1px;
+    outline: none;
+}
+
+button{
+    padding: 10px;
+    border-radius: 10px;
+    border-width: 0px;
+    background-color: orange;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+}
+
+select{
+    padding: 10px;
+    border-width: 0;
+    border-color: black;
+    border-bottom-width: 1px;
+    outline: none;
+}
+
+.rezervare{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+.rezervare form{
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.rezervare .title {
+    font-weight: bold;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+.error {
+    color: red;
+}
