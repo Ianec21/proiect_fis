@@ -23,8 +23,10 @@ public class Flight {
     private String arrivalCity;
     private String departureHour;
     private String arrivalHour;
-    private List<String> workingDays;
+    private String departureDate;
+    private String arrivalDate;
     private double discountPercentageDus;
     private double discountPercentageIntors;
     private FlightType flightType;
+    private String companyId;
 }

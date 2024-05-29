@@ -5,23 +5,17 @@
     <title>Login</title>
 </head>
 <body>
-<h1>Login</h1>
-<form th:action="@{/login}" method="post">
-    <div>
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
-    </div>
-    <div>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-    </div>
-    <div>
+<div class="rezervare">
+    <form th:action="@{/login}" method="post">
+        <h1 class="title">Login</h1>
+        <input type="text" id="username" name="username" placeholder="Username" required>
+        <input type="password" id="password" name="password" placeholder="Password" required>
         <button type="submit">Login</button>
-    </div>
-    <div th:if="${error}">
-        <p th:text="${error}" style="color: red;"></p>
-    </div>
-</form>
-<p>Don't have an account? <a th:href="@{/register}">Register here</a></p>
+        <div th:if="${error}">
+            <p th:text="${error}" style="color: red;"></p>
+        </div>
+        <p>Don't have an account? <a th:href="@{/register}">Register here</a></p>
+    </form>
+</div>
 </body>
 </html>

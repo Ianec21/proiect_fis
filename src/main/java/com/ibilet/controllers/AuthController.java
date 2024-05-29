@@ -21,6 +21,12 @@ public class AuthController {
         return "login";
     }
 
+    @GetMapping("/logout")
+    public String logout(Model model, HttpSession session) {
+        session.invalidate();
+        return "redirect:/login";
+    }
+
     @PostMapping("/login")
     public String loginUser(@RequestParam String username,
                             @RequestParam String password,

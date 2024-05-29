@@ -31,4 +31,14 @@ public class UserService {
         }
         return query.get().getDocuments().get(0).toObject(User.class);
     }
+
+    public User getUserById(String id) throws ExecutionException, InterruptedException {
+        Firestore db = FirestoreClient.getFirestore();
+        ApiFuture<QuerySnapshot> query = db.collection("users").whereEqualTo("id", id).get();
+        if (query.get().isEmpty()) {
+            return null;
+        }
+
+        return query.get().getDocuments().get(0).toObject(User.class);
+    }
 }

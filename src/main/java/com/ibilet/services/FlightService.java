@@ -4,6 +4,9 @@ import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import com.ibilet.entities.Flight;
+import com.ibilet.entities.FlightDTO;
+import com.ibilet.entities.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,6 +15,8 @@ import java.util.concurrent.ExecutionException;
 
 @Service
 public class FlightService {
+    @Autowired
+    UserService userService;
 
     private static final String COLLECTION_NAME = "flights";
 
@@ -24,7 +29,7 @@ public class FlightService {
         return writeResult.get().getUpdateTime().toString();
     }
 
-    public List<Flight> getAllFlights() throws ExecutionException, InterruptedException {
+    public List<FlightDTO> getAllFlights() throws ExecutionException, InterruptedException {
         Firestore dbFirestore = FirestoreClient.getFirestore();
         CollectionReference flightsCollection = dbFirestore.collection(COLLECTION_NAME);
 
@@ -32,13 +37,30 @@ public class FlightService {
         ApiFuture<QuerySnapshot> future = flightsCollection.get();
         QuerySnapshot snapshot = future.get();
 
-        List<Flight> flights = new ArrayList<>();
+        List<FlightDTO> flights = new ArrayList<>();
         for (DocumentSnapshot document : snapshot.getDocuments()) {
-            Flight flight = document.toObject(Flight.class);
-            flights.add(flight);
+            FlightDTO flight = document.toObject(FlightDTO.class);
+
+            if(flight != null){
+                User company = userService.getUserById(flight.getCompanyId());
+                System.out.println(company.getUsername());
+                flight.setCompanyName(company.getUsername());
+
+                flights.add(flight);
+            }
         }
 
         System.out.println(flights);
         return flights;
+    }
+
+    public Flight getFlightById(String id) throws ExecutionException, InterruptedException {
+        Firestore db = FirestoreClient.getFirestore();
+        ApiFuture<QuerySnapshot> query = db.collection("flights").whereEqualTo("code", id).get();
+        if (query.get().isEmpty()) {
+            return null;
+        }
+
+        return query.get().getDocuments().get(0).toObject(Flight.class);
     }
 }

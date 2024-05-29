@@ -20,17 +20,27 @@
     </div>
 
     <div>
-        <table>
+        <table class="table">
             <thead>
             <tr>
-                <th>Flight Code</th>
-                <th>Plane Type</th>
+                <th>Company</th>
+                <th>Plane Code</th>
+                <th>Departure Date</th>
+                <th>Arrival Date</th>
+                <th>Departure Hour</th>
+                <th>Arrival Hour</th>
+                <th>Type</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="flight : ${flights}">
+                <td th:text="${flight.companyName}"></td>
                 <td th:text="${flight.code}"></td>
-                <td th:text="${flight.planeType}"></td>
+                <td th:text="${flight.departureDate}"></td>
+                <td th:text="${flight.arrivalDate}"></td>
+                <td th:text="${flight.departureHour}"></td>
+                <td th:text="${flight.arrivalHour}"></td>
+                <td th:text="${flight.flightType}"></td>
                 <td th:if="${session.loggedInUser != null && session.loggedInUser.role == T(com.ibilet.entities.User.Role).CLIENT}">
                     <form method="get" action="/ticket-buy">
                         <input hidden="hidden" th:value="${flight.code}" name="flightId"/>
