@@ -54,7 +54,7 @@ public class FlightController {
         User user = (User) session.getAttribute("loggedInUser");
 
         if (user == null || user.getRole() != User.Role.AIRLINE) {
-            return "redirect:/home"; // or an error page
+            return "redirect:/"; // or an error page
         }
 
         // Validation logic
@@ -73,12 +73,15 @@ public class FlightController {
         flight.setStandardPrice(standardPrice);
 
         Map<String, String> routeMap = new HashMap<>();
-        routeMap.put("routeDetails", route);
+        String[] routes = route.split("\n");
+
+        for (String sRoute : routes) {
+            String[] routeData = sRoute.split(", ");
+            routeMap.put(routeData[0], routeData[1]);
+        }
         flight.setRoute(routeMap);
 
-        System.out.println(flight);
-
         flightService.createFlight(flight); // Save the flight using the FlightService
-        return "redirect:/home";
+        return "redirect:/";
     }
 }

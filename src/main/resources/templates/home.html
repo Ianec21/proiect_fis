@@ -28,10 +28,10 @@
                 <th>Total Seats</th>
                 <th>Economy Price</th>
                 <th>Standard Price</th>
-                <th>Route</th>
+                <th>Route City</th>
+                <th>Route Date</th>
             </tr>
             </thead>
-
             <tbody>
             <tr th:each="flight : ${flights}">
                 <td th:text="${flight.code}"></td>
@@ -39,7 +39,14 @@
                 <td th:text="${flight.totalSeats}"></td>
                 <td th:text="${flight.economyPrice}"></td>
                 <td th:text="${flight.standardPrice}"></td>
-                <td th:text="${flight.route}"></td>
+                <td colspan="2">
+                    <table>
+                        <tr th:each="routeEntry : ${flight.route}">
+                            <td th:text="${routeEntry.key}"></td>
+                            <td th:text="${routeEntry.value}"></td>
+                        </tr>
+                    </table>
+                </td>
             </tr>
             </tbody>
         </table>
