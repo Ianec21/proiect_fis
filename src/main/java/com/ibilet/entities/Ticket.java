@@ -21,4 +21,7 @@ public class Ticket {
     private PaymentMethod paymentMethod;
     private String flightId;
     private String userID;
+    private boolean validatedCashPayment;
+    private String cardNumber;
+    private String iban;
 }
