@@ -34,12 +34,13 @@ public class FlightFilterService {
             FlightDTO flight = document.toObject(FlightDTO.class);
             flights.add(flight);
         }
+        int seatNumber = adults+children;
         List<FlightDTO> filteredFlight;
         filteredFlight = flights.stream()
-/*                .filter(flight -> flight.getArrivalCity().equals(arrivalCity))
-                .filter(flight -> flight.getDepartureHour().equals(departureDate))
-                .filter(flight -> flight.getDepartureHour().equals(arrivalDate))*/
-                //.filter(flight -> flight.get() >= seatNumber)
+                .filter(flight -> flight.getArrivalCity().equals(arrivalCity))
+                .filter(flight -> flight.getDepartureDate().equals(departureDate))
+                .filter(flight -> flight.getDepartureDate().equals(arrivalDate))
+                //.filter(flight -> flight.getSeatNumber() >= seatNumber)
                 .filter(flight -> flight.getDepartureCity().equals(departureCity))
                 //.filter(flight -> flight.getFlightType().equals(flightType))
                 .toList();

@@ -1,6 +1,7 @@
 package com.ibilet.controllers;
 
 import com.ibilet.entities.Flight;
+import com.ibilet.entities.FlightDTO;
 import com.ibilet.entities.FlightFilter;
 import com.ibilet.services.FlightFilterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ public class FlightFilterController {
         if (arrival == null || departure == null || arrival.isEmpty()||departure.isEmpty()) {
             return "redirect:/booking";
         }
-        /*if(departureDate == null || arrivalDate == null){
+        if(departureDate == null || arrivalDate == null){
             return "redirect:/booking";
         }
         if (flightType.equals(FlightFilter.FlightType.OneWay.toString()) &&
@@ -32,9 +33,9 @@ public class FlightFilterController {
         }
         if(reservationType == null || reservationType.isEmpty()){
             return "redirect:/booking";
-        }*/
+        }
 
-        List<Flight> flight = flightFilterService.FilterFlights(arrival,reservationType,departureDate,arrivalDate,children,adults, departure, flightType);
+        List<FlightDTO> flight = flightFilterService.FilterFlights(arrival,reservationType,departureDate,arrivalDate,children,adults, departure, flightType);
         model.addAttribute("flights",flight);
         return "search";
     }
