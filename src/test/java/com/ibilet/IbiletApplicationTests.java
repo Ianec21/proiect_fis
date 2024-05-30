@@ -1,5 +1,6 @@
 package com.ibilet;
 
+import com.ibilet.controllers.AuthController;
 import com.ibilet.controllers.FlightController;
 import com.ibilet.controllers.FlightFilterController;
 import com.ibilet.entities.Flight;
@@ -7,6 +8,7 @@ import com.ibilet.entities.FlightDTO;
 import com.ibilet.entities.User;
 import com.ibilet.services.FlightFilterService;
 import com.ibilet.services.FlightService;
+import com.ibilet.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -47,6 +49,12 @@ class IbiletApplicationTests {
 
 	@InjectMocks
 	private FlightController flightController;
+
+	@Mock
+	private UserService userService;
+
+	@InjectMocks
+	private AuthController authController;
 
 	@BeforeEach
 	void setUp() {
@@ -139,6 +147,60 @@ class IbiletApplicationTests {
 			String result = flightController.addFlight("planeType", 100, 20, 200.0, 500.0, "departureCity", "arrivalCity", "10:00", "12:00", "2023-05-01", "2023-05-10", 10.0, 15.0, "OneWay", session, model);
 			assertEquals("redirect:/", result);
 			verify(flightService).createFlight(any(Flight.class));
+		}
+	}
+
+	@Nested
+	public class TestsCalin {
+
+		@Test
+		void testLoginPageReturnsLoginView() {
+			String result = authController.login(model);
+			assertEquals("login", result);
+		}
+
+		@Test
+		void testLogoutInvalidatesSessionAndRedirectsToLogin() {
+			String result = authController.logout(model, session);
+			verify(session, times(1)).invalidate();
+			assertEquals("redirect:/login", result);
+		}
+
+		@Test
+		void testLoginUserWithValidCredentialsAndClientRole() throws ExecutionException, InterruptedException {
+			User user = new User();
+			user.setUsername("clientUser");
+			user.setPassword("password123");
+			user.setRole(User.Role.CLIENT);
+
+			when(userService.getUserByUsername(anyString())).thenReturn(user);
+
+			String result = authController.loginUser("clientUser", "password123", model, session);
+			verify(session, times(1)).setAttribute("loggedInUser", user);
+			assertEquals("redirect:/", result);
+		}
+
+		@Test
+		void testLoginUserWithValidCredentialsAndAirlineRole() throws ExecutionException, InterruptedException {
+			User user = new User();
+			user.setUsername("airlineUser");
+			user.setPassword("password123");
+			user.setRole(User.Role.AIRLINE);
+
+			when(userService.getUserByUsername(anyString())).thenReturn(user);
+
+			String result = authController.loginUser("airlineUser", "password123", model, session);
+			verify(session, times(1)).setAttribute("loggedInUser", user);
+			assertEquals("redirect:/", result);
+		}
+
+		@Test
+		void testLoginUserWithInvalidCredentials() throws ExecutionException, InterruptedException {
+			when(userService.getUserByUsername(anyString())).thenReturn(null);
+
+			String result = authController.loginUser("invalidUser", "wrongPassword", model, session);
+			verify(model, times(1)).addAttribute("error", "Invalid username or password");
+			assertEquals("login", result);
 		}
 	}
 }
