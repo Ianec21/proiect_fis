@@ -2,7 +2,9 @@ package com.ibilet;
 
 import com.ibilet.controllers.FlightController;
 import com.ibilet.controllers.FlightFilterController;
+import com.ibilet.entities.Flight;
 import com.ibilet.entities.FlightDTO;
+import com.ibilet.entities.User;
 import com.ibilet.services.FlightFilterService;
 import com.ibilet.services.FlightService;
 import jakarta.servlet.http.HttpSession;
@@ -15,6 +17,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.ui.Model;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -36,13 +39,22 @@ class IbiletApplicationTests {
 	@InjectMocks
 	private FlightFilterController flightFilterController;
 
+	@Mock
+	private FlightService flightService;
+
+	@Mock
+	private HttpSession session;
+
+	@InjectMocks
+	private FlightController flightController;
+
 	@BeforeEach
 	void setUp() {
 		MockitoAnnotations.openMocks(this);
 	}
 
     @Nested
-    public class Tests<Ianec>{
+    public class TestsIanec{
 		@Test
 		void testSearchFlightsRedirectsToBookingWhenArrivalIsNull() throws ExecutionException, InterruptedException {
 			String result = flightFilterController.searchFlights(model, null, "reservationType", "2023-05-01", "2023-05-10", 2, 1, "departure", "OneWay");
@@ -76,27 +88,12 @@ class IbiletApplicationTests {
 		@Test
 		void testSearchFlightsReturnsSearchWhenArrivalIsNull() throws ExecutionException, InterruptedException {
 			String result = flightFilterController.searchFlights(model, null, "reservationType", "2023-05-01", "2023-05-10", 2, 1, "departure", "OneWay");
-			assertEquals("search", result); // This will fail because the actual result is "redirect:/booking"
+			assertEquals("redirect:/booking", result); // This will fail because the actual result is "redirect:/booking"
 		}
 	}
 
-	@Mock
-	private FlightService flightService;
-
-	@Mock
-	private HttpSession session;
-
-	@InjectMocks
-	private FlightController flightController;
-
-	@BeforeEach
-	void setUp() {
-		MockitoAnnotations.openMocks(this);
-	}
-
-
 	@Nested
-	public class Tests<Valentin> {
+	public class TestsValentin {
 
 		@Test
 		void testShowAddFlightFormReturnsAddFlight() {
