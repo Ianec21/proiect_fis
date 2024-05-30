@@ -3,11 +3,14 @@ package com.ibilet;
 import com.ibilet.controllers.AuthController;
 import com.ibilet.controllers.FlightController;
 import com.ibilet.controllers.FlightFilterController;
+import com.ibilet.controllers.TicketController;
 import com.ibilet.entities.Flight;
 import com.ibilet.entities.FlightDTO;
+import com.ibilet.entities.Ticket;
 import com.ibilet.entities.User;
 import com.ibilet.services.FlightFilterService;
 import com.ibilet.services.FlightService;
+import com.ibilet.services.TicketService;
 import com.ibilet.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +20,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.ui.Model;
 
 import java.util.ArrayList;
@@ -55,6 +59,14 @@ class IbiletApplicationTests {
 
 	@InjectMocks
 	private AuthController authController;
+
+	private MockMvc mockMvc;
+
+	@Mock
+	private TicketService ticketService;
+
+	@InjectMocks
+	private TicketController ticketController;
 
 	@BeforeEach
 	void setUp() {
@@ -201,6 +213,66 @@ class IbiletApplicationTests {
 			String result = authController.loginUser("invalidUser", "wrongPassword", model, session);
 			verify(model, times(1)).addAttribute("error", "Invalid username or password");
 			assertEquals("login", result);
+		}
+	}
+
+	@Nested
+	public class TestsVlad{
+		@Test
+		void testCreateTicket_Successful() throws ExecutionException, InterruptedException {
+			Flight flight = new Flight();
+			when(flightService.getFlightById("1")).thenReturn(flight);
+
+			User user = new User();
+			user.setId("123");
+			when(session.getAttribute("loggedInUser")).thenReturn(user);
+
+			String result = ticketController.createTicket(model, session, "1", "John", "Doe", "john.doe@example.com", "1234567890", "30", "CARD", "1234567812345678", "John Doe", "12/24", "123", null);
+			verify(ticketService, times(1)).createTicket(any(Ticket.class));
+			assertEquals("ticket-success", result);
+		}
+
+		@Test
+		void testCreateTicket_MissingFields() throws ExecutionException, InterruptedException {
+			Flight flight = new Flight();
+			when(flightService.getFlightById("1")).thenReturn(flight);
+
+			String result = ticketController.createTicket(model, session, "1", "", "Doe", "john.doe@example.com", "1234567890", "30", "CARD", "1234567812345678", "John Doe", "12/24", "123", null);
+			verify(model, times(1)).addAttribute("error", "Please fill in all fields!");
+			assertEquals("ticket-buy", result);
+		}
+
+		@Test
+		void testOpenReserveTicketPage_NotLoggedIn() throws ExecutionException, InterruptedException {
+			when(session.getAttribute("loggedInUser")).thenReturn(null);
+
+			String result = ticketController.openReserveTicketPage(model, session, "1");
+			assertEquals("redirect:/login", result);
+		}
+
+		@Test
+		void testOpenReserveTicketPage_LoggedIn() throws ExecutionException, InterruptedException {
+			Flight flight = new Flight();
+			when(flightService.getFlightById("1")).thenReturn(flight);
+
+			User user = new User();
+			when(session.getAttribute("loggedInUser")).thenReturn(user);
+
+			String result = ticketController.openReserveTicketPage(model, session, "1");
+			verify(flightService, times(1)).getFlightById("1");
+			verify(model, times(1)).addAttribute("flightData", flight);
+			assertEquals("ticket-buy", result);
+		}
+
+		@Test
+		void testValidateTicket() throws ExecutionException, InterruptedException {
+			Ticket ticket = new Ticket();
+			ticket.setId("1");
+			when(ticketService.getTicketById("1")).thenReturn(ticket);
+
+			String result = ticketController.validateTicket(model, session, "1");
+			verify(ticketService, times(1)).validateTicket(ticket);
+			assertEquals("staff", result);
 		}
 	}
 }
